@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Interactiva</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Poppins', sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-family: 'Space Mono', monospace;
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            animation: slideIn 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .input-group:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .input-group:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .input-group:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 18px;
+            font-family: 'Space Mono', monospace;
+            transition: all 0.3s ease;
+            background: white;
+            color: #2d3748;
+        }
+
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        input[type="number"]:hover,
+        select:hover {
+            border-color: #a5b4fc;
+        }
+
+        select {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px;
+            appearance: none;
+            padding-right: 45px;
+        }
+
+        .result-group {
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            animation: slideIn 0.6s ease-out;
+            animation-delay: 0.4s;
+            animation-fill-mode: both;
+        }
+
+        .result-group label {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 12px;
+        }
+
+        #resultado {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            color: #667eea;
+            padding: 20px;
+            cursor: default;
+            box-sizing: border-box;
+        }
+
+        .operator-icon {
+            display: inline-block;
+            margin-left: 8px;
+            font-size: 20px;
+            vertical-align: middle;
+        }
+
+        /* Animación para el cambio de resultado */
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .pulse {
+            animation: pulse 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧮 Calculadora</h1>
+        
+        <div class="input-group">
+            <label for="numero1">Primer Número</label>
+            <input type="number" id="numero1" placeholder="Ingresa un número" step="any">
+        </div>
+
+        <div class="input-group">
+            <label for="numero2">Segundo Número</label>
+            <input type="number" id="numero2" placeholder="Ingresa un número" step="any">
+        </div>
+
+        <div class="input-group">
+            <label for="operacion">Operación <span class="operator-icon" id="operatorIcon">➕</span></label>
+            <select id="operacion">
+                <option value="suma">➕ Suma</option>
+                <option value="resta">➖ Resta</option>
+                <option value="multiplicacion">✖️ Multiplicación</option>
+                <option value="division">➗ División</option>
+            </select>
+        </div>
+
+        <div class="result-group">
+            <label for="resultado">Resultado</label>
+            <input type="text" id="resultado" readonly value="0">
+        </div>
+    </div>
+
+    <script>
+        const numero1 = document.getElementById('numero1');
+        const numero2 = document.getElementById('numero2');
+        const operacion = document.getElementById('operacion');
+        const resultado = document.getElementById('resultado');
+        const operatorIcon = document.getElementById('operatorIcon');
+
+        // Iconos para cada operación
+        const iconos = {
+            suma: '➕',
+            resta: '➖',
+            multiplicacion: '✖️',
+            division: '➗'
+        };
+
+        // Función para calcular el resultado
+        function calcular() {
+            const num1 = parseFloat(numero1.value);
+            const num2 = parseFloat(numero2.value);
+            const oper = operacion.value;
+
+            // Verificar que ambos números sean válidos
+            if (isNaN(num1) || isNaN(num2)) {
+                resultado.value = '---';
+                return;
+            }
+
+            let resultadoCalculo;
+
+            switch(oper) {
+                case 'suma':
+                    resultadoCalculo = num1 + num2;
+                    break;
+                case 'resta':
+                    resultadoCalculo = num1 - num2;
+                    break;
+                case 'multiplicacion':
+                    resultadoCalculo = num1 * num2;
+                    break;
+                case 'division':
+                    if (num2 === 0) {
+                        resultado.value = 'Error: ÷0';
+                        return;
+                    }
+                    resultadoCalculo = num1 / num2;
+                    break;
+            }
+
+            // Formatear el resultado
+            resultado.value = resultadoCalculo.toFixed(2).replace(/\.00$/, '');
+            
+            // Añadir animación de pulse
+            resultado.classList.remove('pulse');
+            void resultado.offsetWidth; // Forzar reflow
+            resultado.classList.add('pulse');
+        }
+
+        // Función para actualizar el icono de la operación
+        function actualizarIcono() {
+            operatorIcon.textContent = iconos[operacion.value];
+        }
+
+        // Event listeners
+        numero1.addEventListener('input', calcular);
+        numero2.addEventListener('input', calcular);
+        operacion.addEventListener('change', function() {
+            actualizarIcono();
+            calcular();
+        });
+
+        // Calcular al cargar la página si hay valores
+        calcular();
+    </script>
+</body>
+</html>
